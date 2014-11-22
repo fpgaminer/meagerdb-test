@@ -111,3 +111,9 @@ $(RBUILD_PATH)/%.o: %.s
 clean:
 	@echo "Deleting directories"
 	@$(RM) -r build
+
+
+.PHONE: test
+test: $(RBUILD_PATH)/$(BIN_NAME)
+	@echo "Testing...\n"
+	@./$(RBUILD_PATH)/$(BIN_NAME)
