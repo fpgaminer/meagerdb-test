@@ -85,7 +85,24 @@ START_TEST (test1)
 	mdb_close (&db);
 	mu_assert (mdb_open (&db, "test.mdb", (uint8_t const *)"foo", 3) == 0, "mdb_open should succeed.");
 
-	/* TODO: Close DB, and then make sure all the functions return MDBE_NOT_OPEN */
+	mdb_close (&db);
+	mu_assert (mdb_walk (&db, 0, true) == MDBE_NOT_OPEN, "mdb_walk should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_select_by_rowid (&db, 0, 0) == MDBE_NOT_OPEN, "mdb_select_by_rowid should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_select_by_page (&db, 0) == MDBE_NOT_OPEN, "mdb_select_by_page should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_get_value (&db, NULL, 0) == MDBE_NOT_OPEN, "mdb_get_value should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_read_value (&db, NULL, 0, 0) == MDBE_NOT_OPEN, "mdb_read_value should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_get_rowid (&db, NULL, NULL, NULL) == MDBE_NOT_OPEN, "mdb_get_rowid should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_get_next_rowid (&db, 0, &rowid) == MDBE_NOT_OPEN, "mdb_get_next_rowid should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_insert (&db, 0, tmp, 0) == MDBE_NOT_OPEN, "mdb_insert should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_insert_begin (&db, 0, 0) == MDBE_NOT_OPEN, "mdb_insert_begin should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_insert_continue (&db, NULL, 0) == MDBE_NOT_OPEN, "mdb_insert_continue should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_insert_finalize (&db) == MDBE_NOT_OPEN, "mdb_insert_finalize should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_update (&db, NULL, 0) == MDBE_NOT_OPEN, "mdb_update should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_update_begin (&db, 0) == MDBE_NOT_OPEN, "mdb_update_begin should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_update_continue (&db, NULL, 0) == MDBE_NOT_OPEN, "mdb_update_continue should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_update_finalize (&db) == MDBE_NOT_OPEN, "mdb_update_finalize should return MDBE_NOT_OPEN after the database is closed.");
+	mu_assert (mdb_delete (&db) == MDBE_NOT_OPEN, "mdb_delete should return MDBE_NOT_OPEN after the database is closed.");
+
 	/* TODO: Test _begin,_continue,_finalize functions. */
 }
 END_TEST
